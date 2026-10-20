@@ -75,7 +75,14 @@ class MyApp extends StatelessWidget {
           defaultTransition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
             builder:(context,child){
-              return MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling), child: child!);
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                // Android 15/16 (edge-to-edge) : evite que le contenu passe sous la barre de navigation du telephone
+                child: ColoredBox(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: SafeArea(top: false, left: false, right: false, child: child!),
+                ),
+              );
             }
         );
       });
