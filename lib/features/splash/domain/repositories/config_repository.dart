@@ -20,10 +20,10 @@ class ConfigRepository implements ConfigRepositoryInterface{
       return sharedPreferences.setBool(AppConstants.theme, false);
     }
     if(!sharedPreferences.containsKey(AppConstants.countryCode)) {
-      return sharedPreferences.setString(AppConstants.countryCode, AppConstants.languages[0].countryCode);
+      return sharedPreferences.setString(AppConstants.countryCode, AppConstants.defaultLanguage.countryCode);
     }
     if(!sharedPreferences.containsKey(AppConstants.languageCode)) {
-      return sharedPreferences.setString(AppConstants.languageCode, AppConstants.languages[0].languageCode);
+      return sharedPreferences.setString(AppConstants.languageCode, AppConstants.defaultLanguage.languageCode);
     }
 
     if(!sharedPreferences.containsKey(AppConstants.intro)) {

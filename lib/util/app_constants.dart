@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/features/onboard/domain/models/on_boarding_model.dart';
 import 'package:ride_sharing_user_app/localization/language_model.dart';
@@ -130,6 +131,18 @@ class AppConstants {
     LanguageModel(imageUrl: Images.french, languageName: 'French', countryCode: 'FR', languageCode: 'fr'),
     LanguageModel(imageUrl: Images.saudi, languageName: 'عربي', countryCode: 'SA', languageCode: 'ar'),
   ];
+
+  /// Langue par défaut: celle du téléphone si l'app la gère (en, fr, ar), sinon le français.
+  static LanguageModel get defaultLanguage {
+    final String deviceCode = ui.PlatformDispatcher.instance.locale.languageCode;
+    for (final LanguageModel l in languages) {
+      if (l.languageCode == deviceCode) return l;
+    }
+    return fallbackLanguage;
+  }
+
+  static LanguageModel get fallbackLanguage =>
+      languages.firstWhere((l) => l.languageCode == 'fr', orElse: () => languages[0]);
 
   static const int limitOfPickedIdentityImageNumber = 2;
   static const double limitOfPickedImageSizeInMB = 2;

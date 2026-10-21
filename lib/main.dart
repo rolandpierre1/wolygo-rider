@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
           initialRoute: RouteHelper.getSplashRoute(notificationData: notificationData),
           getPages: RouteHelper.routes,
           translations: Messages(languages: languages),
-          fallbackLocale: Locale(AppConstants.languages[0].languageCode, AppConstants.languages[0].countryCode),
+          fallbackLocale: Locale(AppConstants.fallbackLanguage.languageCode, AppConstants.fallbackLanguage.countryCode),
           defaultTransition: Transition.fadeIn,
           transitionDuration: const Duration(milliseconds: 500),
             builder:(context,child){

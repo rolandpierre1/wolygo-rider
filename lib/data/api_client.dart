@@ -46,7 +46,7 @@ class ApiClient extends GetxService {
     header.addAll({
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept' : 'application/json',
-      AppConstants.localization: sharedPreferences.getString(AppConstants.languageCode) ?? AppConstants.languages[0].languageCode,
+      AppConstants.localization: sharedPreferences.getString(AppConstants.languageCode) ?? AppConstants.defaultLanguage.languageCode,
       'Authorization': 'Bearer $token',
     });
     if (kDebugMode) {
