@@ -37,6 +37,8 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
           textInputAction: TextInputAction.search,
           onTap: widget.onTap,
           enabled: true,
+          cursorColor: Colors.white,
+          cursorWidth: 2,
           style: textRegular.copyWith(fontSize: Dimensions.fontSizeDefault, color: Colors.white),
           decoration: InputDecoration(
             hintText: widget.hint,
