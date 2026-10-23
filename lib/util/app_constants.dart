@@ -56,6 +56,7 @@ class AppConstants {
   static const String submitReview = '/api/customer/review/store';
   static const String tripList = '/api/customer/ride/list';
   static const String paymentUri = '/api/customer/ride/payment';
+  static const String walletTopup = '/api/customer/wallet/topup';
   static const String cardHold = '/api/customer/ride/card-hold';
   static const String digitalPayment = '/api/customer/ride/digital-payment';
   static const String createChannel = '/api/customer/chat/create-channel';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/features/wallet/widget/transaction_card_widget.dart';
 import 'package:ride_sharing_user_app/features/wallet/widget/wallet_money_amount_widget.dart';
+import 'package:ride_sharing_user_app/features/wallet/widget/wallet_topup_widget.dart';
 import 'package:ride_sharing_user_app/util/dimensions.dart';
 import 'package:ride_sharing_user_app/features/notification/widgets/notification_shimmer.dart';
 import 'package:ride_sharing_user_app/features/wallet/controllers/wallet_controller.dart';
@@ -25,6 +26,8 @@ class _WalletMoneyScreenState extends State<WalletMoneyScreen> {
         const SizedBox(height: Dimensions.paddingSizeDefault),
 
         const WalletMoneyAmountWidget(walletMoney: true),
+
+        const WalletTopupWidget(),
 
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),

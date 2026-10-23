@@ -755,5 +755,13 @@
   "track_now": "Suite maintenant",
   "card": "Carte bancaire",
   "card_payment": "Paiement par carte",
-  "card_not_confirmed": "Ta carte n'a pas été confirmée. Réessaie ou choisis un autre mode de paiement."
+  "card_not_confirmed": "Ta carte n'a pas été confirmée. Réessaie ou choisis un autre mode de paiement.",
+  "topup_title": "Recharger mon portefeuille",
+  "topup_amount": "Montant",
+  "topup_add": "Ajouter",
+  "topup_hint": "Paiement sécurisé par Stripe. Minimum 5 $, maximum 500 $.",
+  "topup_amount_range": "Entre un montant entre 5 $ et 500 $.",
+  "topup_success": "Portefeuille rechargé avec succès.",
+  "topup_not_completed": "La recharge n'a pas été complétée. Aucun montant n'est perdu : si ta carte a été débitée, le solde sera mis à jour sous peu.",
+  "wallet_topup": "Recharge du portefeuille"
 }

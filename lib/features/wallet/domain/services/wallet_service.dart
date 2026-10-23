@@ -22,6 +22,16 @@ class WalletService implements WalletServiceInterface{
   }
 
   @override
+  Future createTopup(double amount) async{
+    return await walletRepositoryInterface.createTopup(amount);
+  }
+
+  @override
+  Future getTopup(String id) async{
+    return await walletRepositoryInterface.getTopup(id);
+  }
+
+  @override
   Future transferWalletMoney(String balance) async{
     return await walletRepositoryInterface.transferWalletMoney(balance);
   }

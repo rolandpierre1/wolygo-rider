@@ -756,5 +756,13 @@
   "track_now": "Track Now",
   "card": "Credit/debit card",
   "card_payment": "Card payment",
-  "card_not_confirmed": "Your card was not confirmed. Try again or choose another payment method."
+  "card_not_confirmed": "Your card was not confirmed. Try again or choose another payment method.",
+  "topup_title": "Top up my wallet",
+  "topup_amount": "Amount",
+  "topup_add": "Add",
+  "topup_hint": "Secure payment by Stripe. Minimum $5, maximum $500.",
+  "topup_amount_range": "Enter an amount between $5 and $500.",
+  "topup_success": "Wallet topped up successfully.",
+  "topup_not_completed": "The top-up was not completed. If your card was charged, your balance will update shortly.",
+  "wallet_topup": "Wallet top-up"
 }

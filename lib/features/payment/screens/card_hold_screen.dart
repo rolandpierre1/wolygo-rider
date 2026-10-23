@@ -16,10 +16,10 @@ class _CardHoldScreenState extends State<CardHoldScreen> {
 
   void _check(String url) {
     if(_done) return;
-    if(url.contains('/card-hold/return')) {
+    if(url.contains('/card-hold/return') || url.contains('/wallet-topup/return')) {
       _done = true;
       Get.back(result: true);
-    } else if(url.contains('/card-hold/cancelled')) {
+    } else if(url.contains('/card-hold/cancelled') || url.contains('/wallet-topup/cancelled')) {
       _done = true;
       Get.back(result: false);
     }

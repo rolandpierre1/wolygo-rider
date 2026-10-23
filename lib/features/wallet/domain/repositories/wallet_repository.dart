@@ -28,6 +28,16 @@ class WalletRepository implements WalletRepositoryInterface{
   }
 
   @override
+  Future<Response> createTopup(double amount) async {
+    return await apiClient.postData(AppConstants.walletTopup, {'amount': amount});
+  }
+
+  @override
+  Future<Response> getTopup(String id) async {
+    return await apiClient.getData('${AppConstants.walletTopup}/$id');
+  }
+
+  @override
   Future<Response> transferWalletMoney(String balance) async{
     return await apiClient.postData(AppConstants.transferMoneyFromDrivemondToMart, {"amount":balance});
   }
