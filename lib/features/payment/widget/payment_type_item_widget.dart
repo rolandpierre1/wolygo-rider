@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/util/dimensions.dart';
 import 'package:ride_sharing_user_app/util/styles.dart';
 import 'package:ride_sharing_user_app/features/payment/controllers/payment_controller.dart';
+import 'package:ride_sharing_user_app/features/ride/controllers/ride_controller.dart';
 
 class PaymentTypeItem extends StatelessWidget {
   final String title;
@@ -13,6 +14,10 @@ class PaymentTypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool cardTrip = Get.find<RideController>().tripDetails?.paymentMethod == 'card';
+    if((title == 'card' && !cardTrip) || (cardTrip && title != 'card')) {
+      return const SizedBox();
+    }
     return GetBuilder<PaymentController>(builder: (paymentController) {
           return InkWell(
             onTap: () => paymentController.setPaymentType(index),

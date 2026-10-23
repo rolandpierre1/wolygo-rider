@@ -202,9 +202,7 @@ class TripFareSummery extends StatelessWidget {
                           Dimensions.paddingSizeExtraSmall,
                         )),
                         child: DropdownButton<String>(
-                          value: paymentController.paymentTypeIndex == 0 ?
-                          'digital' :
-                          'wallet',
+                          value: paymentController.paymentTypeList[paymentController.paymentTypeIndex],
                           items: paymentController.paymentTypeList.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -224,7 +222,7 @@ class TripFareSummery extends StatelessWidget {
                                 subMessage: '${'wallet_balance'.tr}: ${PriceConverter.convertPrice(Get.find<ProfileController>().profileModel!.data!.wallet!.walletBalance!)}'
                               );
                             }else{
-                               paymentController.setPaymentType(value == 'digital' ? 0 : 1);
+                               paymentController.setPaymentType(value == 'digital' ? 0 : value == 'wallet' ? 1 : 2);
                             }
                           },
                           isExpanded: true,

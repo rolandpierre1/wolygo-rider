@@ -41,7 +41,7 @@ class RideRepository implements RideRepositoryInterface{
 
   @override
   Future<Response> submitRideRequest(
-      {required String pickupLat,
+      {String? cardHoldId, required String pickupLat,
         required String pickupLng,
         required String destinationLat,
         required String destinationLng,
@@ -102,6 +102,7 @@ class RideRepository implements RideRepositoryInterface{
       "actual_fare": actualFare,
       "note" : note,
       "payment_method" : paymentMethod,
+      "card_hold_id": cardHoldId,
       "type" : type,
       "bid" : bid,
       "pickup_address": pickupAddress,

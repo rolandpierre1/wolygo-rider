@@ -753,6 +753,8 @@
   "customer_note": "Customer Note:",
   "enter_valid_contact_number": "Enter valid contact number",
   "parcel_track": "Parcel Track",
-  "track_now": "Track Now"
-
+  "track_now": "Track Now",
+  "card": "Credit/debit card",
+  "card_payment": "Card payment",
+  "card_not_confirmed": "Your card was not confirmed. Try again or choose another payment method."
 }

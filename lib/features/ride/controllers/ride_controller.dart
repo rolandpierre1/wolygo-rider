@@ -236,7 +236,20 @@ class RideController extends GetxController implements GetxService {
     Address pickUpPosition = parcel ? locController.parcelSenderAddress! : tripDetails == null ? locController.fromAddress! : Address();
     Address destinationPosition = parcel ? locController.parcelReceiverAddress! : tripDetails == null ? locController.toAddress! : Address();
 
+    String? cardHoldId;
+    if(Get.find<PaymentController>().paymentTypeIndex == 2 && tripDetails == null) {
+      final double fareToHold = parcel ? (double.tryParse(parcelFare) ?? 0) : (estimatedFare != actualFare ? actualFare.toDouble() : estimatedFare);
+      final bool held = await Get.find<PaymentController>().ensureCardHold(fareToHold);
+      if(!held) {
+        isSubmit = false;
+        update();
+        return Response(statusCode: 400, statusText: 'card_hold_failed');
+      }
+      cardHoldId = Get.find<PaymentController>().cardHoldId;
+    }
+
     Response response = await rideServiceInterface.submitRideRequest(
+      cardHoldId: cardHoldId,
       pickupLat: pickUpPosition.latitude.toString(),
       pickupLng: pickUpPosition.longitude.toString(),
       destinationLat: destinationPosition.latitude.toString(),
@@ -287,6 +300,14 @@ class RideController extends GetxController implements GetxService {
       extraFareFee: parcel ? (parcelEstimatedFare?.data?.extraFareFee ?? 0) : (selectedType?.extraFareFee ?? 0),
       zoneId: parcel ? parcelEstimatedFare?.data?.zoneId ?? '' : selectedType?.zoneId ,
     );
+
+    if(cardHoldId != null) {
+      if(response.statusCode == 200) {
+        Get.find<PaymentController>().clearCardHold();
+      } else if(response.body is Map && '${response.body}'.contains('card_hold')) {
+        Get.find<PaymentController>().clearCardHold();
+      }
+    }
 
     if(response.statusCode == 200 && response.body['data'] != null) {
       biddingList = [];

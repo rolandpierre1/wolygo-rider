@@ -66,6 +66,7 @@ class RideService implements RideServiceInterface{
 
   @override
   Future submitRideRequest({
+    String? cardHoldId,
     required String pickupLat, required String pickupLng, required String destinationLat, required String destinationLng,
     required String customerCurrentLat, required String customerCurrentLng, required String vehicleCategoryId, required String estimatedDistance,
     required String estimatedTime, required String actualFare,required bool bid,
@@ -85,6 +86,7 @@ class RideService implements RideServiceInterface{
     double? returnFee, double? cancellationFee, String? zoneId,
   }) async{
     return await rideRepositoryInterface.submitRideRequest(
+      cardHoldId: cardHoldId,
         pickupLat: pickupLat, pickupLng: pickupLng, destinationLat: destinationLat, bid: bid,
         destinationLng: destinationLng, customerCurrentLat: customerCurrentLat, customerCurrentLng: customerCurrentLng, actualFare: actualFare,
         vehicleCategoryId: vehicleCategoryId, estimatedDistance: estimatedDistance,

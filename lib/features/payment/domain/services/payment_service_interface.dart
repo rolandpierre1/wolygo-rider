@@ -1,6 +1,8 @@
 abstract class PaymentServiceInterface{
   Future<dynamic> submitReview(String id, int ratting, String comment );
-  Future<dynamic> paymentSubmit(String tripId, String paymentMethod );
+  Future<dynamic> paymentSubmit(String tripId, String paymentMethod, {String tips = '0'});
+  Future<dynamic> createCardHold(double fare);
+  Future<dynamic> getCardHold(String holdId);
   Future<dynamic> getPaymentGetWayList();
   Future<bool?> saveLastPaymentMethod(String paymentMethod);
   String getLastPaymentMethod();

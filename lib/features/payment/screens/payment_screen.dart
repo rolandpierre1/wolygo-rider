@@ -237,7 +237,7 @@ class _PaymentScreenState extends State<PaymentScreen> with WidgetsBindingObserv
                         )),
                       ) : const SizedBox(),
 
-                      paymentController.paymentTypeIndex == 0 ?
+                      (paymentController.paymentTypeIndex == 0 || paymentController.paymentTypeIndex == 2) ?
                       Container(width: MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.only(left:Dimensions.paddingSizeDefault,
                           right:Dimensions.paddingSizeDefault, bottom: Dimensions.paddingSizeDefault,
@@ -368,6 +368,15 @@ class _PaymentScreenState extends State<PaymentScreen> with WidgetsBindingObserv
             Center(child: SpinKitCircle(color: Theme.of(context).primaryColor, size: 40.0,)) :
             ButtonWidget(buttonText: 'pay_now'.tr,
               onPressed: () {
+                if(paymentController.paymentTypeIndex == 2) {
+                  if(Get.find<RideController>().finalFare != null){
+                    paymentController.paymentSubmit(Get.find<RideController>().finalFare!.id!, 'card',
+                      fromParcel: widget.fromParcel,
+                      tips: paymentController.tipAmount,
+                    );
+                  }
+                  return;
+                }
                 if(paymentController.paymentTypeIndex == 0 && paymentController.paymentGatewayIndex != -1)
                 {
                   Get.to(() => DigitalPaymentScreen(

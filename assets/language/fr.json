@@ -752,6 +752,8 @@
   "customer_note": "Remarque du client:",
   "enter_valid_contact_number": "Entrez le numéro de contact valide",
   "parcel_track": "Piste de colis",
-  "track_now": "Suite maintenant"
-
+  "track_now": "Suite maintenant",
+  "card": "Carte bancaire",
+  "card_payment": "Paiement par carte",
+  "card_not_confirmed": "Ta carte n'a pas été confirmée. Réessaie ou choisis un autre mode de paiement."
 }

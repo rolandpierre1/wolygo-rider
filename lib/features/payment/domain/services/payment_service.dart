@@ -6,8 +6,18 @@ class PaymentService implements PaymentServiceInterface{
   PaymentService({required this.paymentRepositoryInterface});
 
   @override
-  Future paymentSubmit(String tripId, String paymentMethod) async{
-   return await paymentRepositoryInterface.paymentSubmit(tripId, paymentMethod);
+  Future paymentSubmit(String tripId, String paymentMethod, {String tips = '0'}) async{
+   return await paymentRepositoryInterface.paymentSubmit(tripId, paymentMethod, tips: tips);
+  }
+
+  @override
+  Future createCardHold(double fare) async{
+    return await paymentRepositoryInterface.createCardHold(fare);
+  }
+
+  @override
+  Future getCardHold(String holdId) async{
+    return await paymentRepositoryInterface.getCardHold(holdId);
   }
 
   @override

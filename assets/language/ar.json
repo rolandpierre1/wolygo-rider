@@ -735,9 +735,8 @@
   "refund_reason": "سبب استرداد الأموال:",
   "refund_details": "تفاصيل استرداد الأموال",
   "customer_note": "ملاحظة العميل:",
-  "enter_valid_contact_number": "أدخل رقم اتصال صالح"
-
-
-
-
+  "enter_valid_contact_number": "أدخل رقم اتصال صالح",
+  "card": "بطاقة بنكية",
+  "card_payment": "الدفع بالبطاقة",
+  "card_not_confirmed": "لم يتم تأكيد بطاقتك. حاول مرة أخرى أو اختر طريقة دفع أخرى."
 }

@@ -22,8 +22,18 @@ class PaymentRepository implements PaymentRepositoryInterface{
   }
 
   @override
-  Future<Response> paymentSubmit(String tripId, String paymentMethod ) async {
-    return await apiClient.getData('${AppConstants.paymentUri}?trip_request_id=$tripId&payment_method=$paymentMethod');
+  Future<Response> paymentSubmit(String tripId, String paymentMethod, {String tips = '0'}) async {
+    return await apiClient.getData('${AppConstants.paymentUri}?trip_request_id=$tripId&payment_method=$paymentMethod&tips=$tips');
+  }
+
+  @override
+  Future<Response> createCardHold(double fare) async {
+    return await apiClient.postData(AppConstants.cardHold, {'estimated_fare': fare});
+  }
+
+  @override
+  Future<Response> getCardHold(String holdId) async {
+    return await apiClient.getData('${AppConstants.cardHold}/$holdId');
   }
   @override
   Future getPaymentGetWayList() async{
