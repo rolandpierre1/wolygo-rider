@@ -87,7 +87,7 @@ class _ParcelInfoDetailsWidgetState extends State<ParcelInfoDetailsWidget> {
           ),
           const SizedBox(height: Dimensions.paddingSizeDefault),
 
-          if(zoneExtraFareReason != null) ...[
+          if(zoneExtraFareReason != null && zoneExtraFareReason!.isNotEmpty) ...[
             Text(zoneExtraFareReason!, style: textRegular.copyWith(color: Theme.of(context).colorScheme.inverseSurface,fontSize: 11)),
             const SizedBox(height: Dimensions.paddingSizeSmall),
           ],

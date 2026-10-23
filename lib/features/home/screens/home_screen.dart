@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   GetBuilder<LocationController>(
                                       builder: (locationController) {
                                         String? zoneExtraFareReason = _getExtraFairReason(config?.zoneExtraFare, locationController.zoneID);
-                                        return zoneExtraFareReason != null ? Padding(
+                                        return (zoneExtraFareReason != null && zoneExtraFareReason.isNotEmpty) ? Padding(
                                           padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
                                           child: Text(zoneExtraFareReason, style: textRegular.copyWith(color: Theme.of(context).colorScheme.inverseSurface,fontSize: 11)),
                                         ) : const SizedBox();
