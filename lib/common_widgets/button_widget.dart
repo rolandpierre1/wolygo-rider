@@ -52,13 +52,13 @@ class ButtonWidget extends StatelessWidget {
             child: Icon(icon, color: transparent ? Theme.of(context).primaryColor : Colors.white)) : const SizedBox(),
 
 
-          Text(buttonText, textAlign: TextAlign.center, style: boldText? textBold.copyWith(
+          Flexible(child: FittedBox(fit: BoxFit.scaleDown, child: Text(buttonText, textAlign: TextAlign.center, maxLines: 1, style: boldText? textBold.copyWith(
             color: textColor ?? (transparent ? Theme.of(context).primaryColor : Colors.white),
             fontSize: fontSize ?? Dimensions.fontSizeDefault,
           ):
 
           textRegular.copyWith(color: textColor ?? (transparent ? Theme.of(context).primaryColor : Colors.white),
-            fontSize: fontSize ?? Dimensions.fontSizeLarge)),
+            fontSize: fontSize ?? Dimensions.fontSizeLarge)))),
         ]),
       ),
     )));
