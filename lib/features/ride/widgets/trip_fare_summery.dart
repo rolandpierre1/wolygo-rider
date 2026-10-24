@@ -202,7 +202,7 @@ class TripFareSummery extends StatelessWidget {
                           Dimensions.paddingSizeExtraSmall,
                         )),
                         child: DropdownButton<String>(
-                          value: paymentController.paymentTypeList[paymentController.paymentTypeIndex],
+                          value: paymentController.paymentTypeIndex == 0 ? 'card' : paymentController.paymentTypeList[paymentController.paymentTypeIndex],
                           items: paymentController.paymentTypeList.where((v) => v != 'digital').map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,

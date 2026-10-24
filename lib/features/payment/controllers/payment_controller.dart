@@ -32,7 +32,7 @@ class PaymentController extends GetxController implements GetxService{
 
   bool isLoading = false;
   int reviewTypeSelectedIndex = 4;
-  int paymentTypeIndex = 0;
+  int paymentTypeIndex = 2;
   int paymentGatewayIndex = -1;
   String tipAmount = '0';
 
