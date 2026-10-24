@@ -37,7 +37,7 @@ class _InitialWidgetState extends State<InitialWidget> {
         (rideController.discountAmount.toDouble() > 0 ? rideController.discountFare : rideController.estimatedFare) >
             Get.find<ProfileController>().profileModel!.data!.wallet!.walletBalance!
     ){
-      Get.find<PaymentController>().setPaymentType(0);
+      Get.find<PaymentController>().setPaymentType(2);
     }
     zoneExtraFareReason = _getExtraFairReason(Get.find<ConfigController>().config?.zoneExtraFare, Get.find<LocationController>().zoneID);
 

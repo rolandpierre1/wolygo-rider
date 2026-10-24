@@ -236,6 +236,9 @@ class RideController extends GetxController implements GetxService {
     Address pickUpPosition = parcel ? locController.parcelSenderAddress! : tripDetails == null ? locController.fromAddress! : Address();
     Address destinationPosition = parcel ? locController.parcelReceiverAddress! : tripDetails == null ? locController.toAddress! : Address();
 
+    if(Get.find<PaymentController>().paymentTypeIndex == 0 && tripDetails == null) {
+      Get.find<PaymentController>().setPaymentType(2);
+    }
     String? cardHoldId;
     if(Get.find<PaymentController>().paymentTypeIndex == 2 && tripDetails == null) {
       final double fareToHold = parcel ? (double.tryParse(parcelFare) ?? 0) : (estimatedFare != actualFare ? actualFare.toDouble() : estimatedFare);
