@@ -57,14 +57,14 @@ class _OtpWidgetState extends State<OtpWidget> {
               Text.rich(TextSpan(style: textRegular.copyWith(fontSize: Dimensions.fontSizeLarge,
                   color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.8)), children:  [
 
-                TextSpan(text: 'please'.tr,
+                TextSpan(text: '${'please'.tr} ',
                     style: textRegular.copyWith(color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.8),
                         fontSize: Dimensions.fontSizeDefault)),
 
-                TextSpan(text: 'share_the_pin'.tr,
+                TextSpan(text: '${'share_the_pin'.tr} ',
                     style: textSemiBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.fontSizeDefault)),
 
-                TextSpan(text: 'with_the_driver'.tr, style: textRegular.copyWith(
+                TextSpan(text: ' ${'with_the_driver'.tr}', style: textRegular.copyWith(
                     color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.8),
                     fontSize: Dimensions.fontSizeDefault)),]), textAlign: TextAlign.center),
               const SizedBox(height: Dimensions.paddingSizeExtraLarge,),

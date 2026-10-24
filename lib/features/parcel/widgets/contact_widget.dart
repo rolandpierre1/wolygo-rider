@@ -15,17 +15,17 @@ class ContactWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<RideController>(
       builder: (rideController) {
-        return  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
+        return  Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
 
           InkWell(onTap: () => Get.find<MessageController>().createChannel(driverId,  Get.find<RideController>().tripDetails?.id),
-              child: Padding(padding:Get.find<LocalizationController>().isLtr? const EdgeInsets.only(top:Dimensions.paddingSizeDefault,bottom:Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeExtraLarge) :
-                   const EdgeInsets.only(top:Dimensions.paddingSizeDefault,bottom:Dimensions.paddingSizeDefault, left: Dimensions.paddingSizeExtraLarge),
+              child: Padding(padding:Get.find<LocalizationController>().isLtr? const EdgeInsets.only(top:Dimensions.paddingSizeDefault,bottom:Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeSmall) :
+                   const EdgeInsets.only(top:Dimensions.paddingSizeDefault,bottom:Dimensions.paddingSizeDefault, left: Dimensions.paddingSizeSmall),
                 child: SizedBox(width: Dimensions.iconSizeLarge, child: Image.asset(Images.customerMessage)))),
 
           Container(width: 1,height: 25,color: Theme.of(context).hintColor.withOpacity(0.25),padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),),
           InkWell(onTap: () async  =>  await _launchUrl("tel:${Get.find<RideController>().tripDetails!.driver!.phone}"),
-            child: Padding(padding: Get.find<LocalizationController>().isLtr? const EdgeInsets.only(left:Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeSmall,bottom: Dimensions.paddingSizeSmall) :
-                const EdgeInsets.only(right:Dimensions.paddingSizeLarge, top: Dimensions.paddingSizeSmall,bottom: Dimensions.paddingSizeSmall),
+            child: Padding(padding: Get.find<LocalizationController>().isLtr? const EdgeInsets.only(left:Dimensions.paddingSizeSmall, top: Dimensions.paddingSizeSmall,bottom: Dimensions.paddingSizeSmall) :
+                const EdgeInsets.only(right:Dimensions.paddingSizeSmall, top: Dimensions.paddingSizeSmall,bottom: Dimensions.paddingSizeSmall),
               child: SizedBox(width: Dimensions.iconSizeLarge, child: Image.asset(Images.customerCall)))),
 
         ],);

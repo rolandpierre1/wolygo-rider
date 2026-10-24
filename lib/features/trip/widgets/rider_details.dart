@@ -31,8 +31,8 @@ class ActivityScreenRiderDetails extends StatelessWidget {
                 const SizedBox(width: Dimensions.paddingSizeSmall,),
 
 
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        rideController.tripDetails?.driver != null ? SizedBox(width: 100,
+                Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        rideController.tripDetails?.driver != null ? SizedBox(
                           child: Text('${rideController.tripDetails!.driver!.firstName!} ${rideController.tripDetails!.driver!.lastName!}',
                             style: textMedium.copyWith(fontSize: Dimensions.fontSizeLarge,color: Theme.of(context).primaryColorDark),
                             overflow: TextOverflow.ellipsis,
@@ -49,9 +49,9 @@ class ActivityScreenRiderDetails extends StatelessWidget {
                                 style: textRegular.copyWith(fontSize: Dimensions.fontSizeDefault)),
                           ],
                         )),
-                      ],),
+                      ],)),
 
-                Container(width: 1,height: 25,color: Theme.of(context).hintColor.withOpacity(0.25),margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraLarge)),
+                Container(width: 1,height: 25,color: Theme.of(context).hintColor.withOpacity(0.25),margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall)),
 
                 ContactWidget(driverId: rideController.tripDetails?.driver?.id??'0',),
                   ]),
