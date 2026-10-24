@@ -159,7 +159,7 @@ class _TipsWidgetState extends State<TipsWidget> {
               padding:const EdgeInsets.only(bottom: Dimensions.paddingSizeDefault,
                 top: Dimensions.paddingSizeExtraLarge,
               ),
-              child: SizedBox(width: 100, child: ButtonWidget(buttonText: 'give_tips'.tr,
+              child: SizedBox(width: 220, child: ButtonWidget(buttonText: 'give_tips'.tr,
                 radius: 10,
                 onPressed: (){
                   Get.find<PaymentController>().setTipAmount(

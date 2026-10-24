@@ -75,7 +75,7 @@ class TripItemView extends StatelessWidget {
       child: Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall),
         child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Stack(children: [
-            Container(width: 80, height: Get.height * 0.105,
+            Container(width: 80, constraints: BoxConstraints(minHeight: Get.height * 0.105),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                 color:tripDetails.vehicle != null ?
@@ -101,6 +101,7 @@ class TripItemView extends StatelessWidget {
                   tripDetails.vehicleCategory!.name!
                       : '' :
                   'parcel'.tr,
+                  maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
                   style: textMedium.copyWith(
                     fontSize: Dimensions.fontSizeExtraSmall,
                     color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.8),

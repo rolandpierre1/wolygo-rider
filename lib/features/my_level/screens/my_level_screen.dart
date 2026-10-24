@@ -66,6 +66,7 @@ class _MyLevelScreenState extends State<MyLevelScreen> {
                 Image.network( height: 16,width: 16,
                   '${Get.find<ConfigController>().config?.imageBaseUrl?.level}/'
                       '${levelController.levelModel?.data?.currentLevel?.image}',
+                  errorBuilder: (context, error, stackTrace) => const SizedBox(height: 16, width: 16),
                 )
               ]),
               const SizedBox(height: Dimensions.paddingSizeSmall),
@@ -107,6 +108,7 @@ class _MyLevelScreenState extends State<MyLevelScreen> {
                 Image.network(height: 30,width: 30,
                   '${Get.find<ConfigController>().config?.imageBaseUrl?.level}/'
                       '${levelController.levelModel?.data?.nextLevel?.image}',
+                  errorBuilder: (context, error, stackTrace) => const SizedBox(height: 30, width: 30),
                 )
               ]),
 
