@@ -423,13 +423,13 @@ class _SetDestinationScreenState extends State<SetDestinationScreen> {
                             Dimensions.paddingSizeExtraLarge,Dimensions.paddingSizeExtraLarge,
                           ),
                           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                            Text(
+                            Flexible(child: Text(
                               'you_can_add_multiple_route_to'.tr,
                               style: textRegular.copyWith(
                                 fontSize: Dimensions.fontSizeSmall,
                                 color: Colors.white.withOpacity(.75),
                               ),
-                            ),
+                            )),
 
                             InkWell(
                               onTap: () {

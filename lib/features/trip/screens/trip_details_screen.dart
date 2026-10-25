@@ -122,14 +122,14 @@ class _TripDetailsScreenState extends State<TripDetailsScreen> {
                               Text.rich(TextSpan(style: textRegular.copyWith(fontSize: Dimensions.fontSizeLarge,
                                   color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.8)), children:  [
 
-                                TextSpan(text: '${'please_share_the'.tr} ',
+                                TextSpan(text: 'please_share_the'.tr,
                                     style: textRegular.copyWith(color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.8),
                                         fontSize: Dimensions.fontSizeDefault)),
 
                                 TextSpan(text: ' OTP '.tr,
                                     style: textSemiBold.copyWith(color: Theme.of(context).hintColor, fontSize: Dimensions.fontSizeDefault)),
 
-                                TextSpan(text: ' ${'with_the_driver'.tr}', style: textRegular.copyWith(
+                                TextSpan(text: 'with_the_driver'.tr, style: textRegular.copyWith(
                                     color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(0.8),
                                     fontSize: Dimensions.fontSizeDefault)),]), textAlign: TextAlign.center),
                             ]),

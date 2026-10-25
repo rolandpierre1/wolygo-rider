@@ -226,12 +226,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: Dimensions.paddingSizeDefault),
 
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text(
+                      Flexible(child: Text(
                         '${'already_have_an_account'.tr} ',
                           style: textRegular.copyWith(fontSize: Dimensions.fontSizeSmall,
                               color: Theme.of(context).textTheme.bodyLarge!.color,
                           ),
-                      ),
+                      )),
 
                       TextButton(
                           onPressed: () =>  Get.back(),
