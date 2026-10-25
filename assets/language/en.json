@@ -764,5 +764,19 @@
   "topup_amount_range": "Enter an amount between $5 and $500.",
   "topup_success": "Wallet topped up successfully.",
   "topup_not_completed": "The top-up was not completed. If your card was charged, your balance will update shortly.",
-  "wallet_topup": "Wallet top-up"
+  "wallet_topup": "Wallet top-up",
+  "color_black": "Black",
+  "color_white": "White",
+  "color_gray": "Gray",
+  "color_silver": "Silver",
+  "color_red": "Red",
+  "color_blue": "Blue",
+  "color_green": "Green",
+  "color_yellow": "Yellow",
+  "color_orange": "Orange",
+  "color_brown": "Brown",
+  "color_beige": "Beige",
+  "color_gold": "Gold",
+  "color_purple": "Purple",
+  "color_pink": "Pink"
 }

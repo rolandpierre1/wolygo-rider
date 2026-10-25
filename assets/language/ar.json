@@ -746,5 +746,19 @@
   "topup_amount_range": "أدخل مبلغاً بين 5 و 500.",
   "topup_success": "تم شحن المحفظة بنجاح.",
   "topup_not_completed": "لم تكتمل عملية الشحن. إذا تم خصم المبلغ فسيتم تحديث رصيدك قريباً.",
-  "wallet_topup": "شحن المحفظة"
+  "wallet_topup": "شحن المحفظة",
+  "color_black": "أسود",
+  "color_white": "أبيض",
+  "color_gray": "رمادي",
+  "color_silver": "فضي",
+  "color_red": "أحمر",
+  "color_blue": "أزرق",
+  "color_green": "أخضر",
+  "color_yellow": "أصفر",
+  "color_orange": "برتقالي",
+  "color_brown": "بني",
+  "color_beige": "بيج",
+  "color_gold": "ذهبي",
+  "color_purple": "بنفسجي",
+  "color_pink": "وردي"
 }

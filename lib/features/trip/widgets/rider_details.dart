@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ride_sharing_user_app/common_widgets/vehicle_color_dot.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/features/parcel/widgets/contact_widget.dart';
 import 'package:ride_sharing_user_app/util/dimensions.dart';
@@ -62,7 +63,7 @@ class ActivityScreenRiderDetails extends StatelessWidget {
             Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               child: rideController.tripDetails?.vehicle != null ? Row(children: [
 
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
                   Text(rideController.tripDetails!.vehicle != null ? rideController.tripDetails!.vehicle!.model!.name! : '',
                     style: textMedium.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).primaryColorDark),
@@ -74,17 +75,26 @@ class ActivityScreenRiderDetails extends StatelessWidget {
                         style: textRegular.copyWith(fontSize: Dimensions.fontSizeDefault)),
                     ],
                   ), overflow: TextOverflow.ellipsis),
-                ]),
 
-                const Spacer(),
+                  if(rideController.tripDetails!.vehicle!.color != null && rideController.tripDetails!.vehicle!.color!.isNotEmpty)
+                    Row(children: [
+                      VehicleColorDot(colorKey: rideController.tripDetails!.vehicle!.color),
+                      const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                      Text('color_${rideController.tripDetails!.vehicle!.color}'.tr,
+                        style: textRegular.copyWith(fontSize: Dimensions.fontSizeDefault)),
+                    ]),
+                ])),
+
+                const SizedBox(width: Dimensions.paddingSizeSmall),
 
                 Container(decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
                   color: Theme.of(context).hintColor.withOpacity(0.25)),padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeThree),
                   child: ClipRRect(borderRadius: BorderRadius.circular(Dimensions.radiusOverLarge),
-                      child: ImageWidget(height: 50, width: 50,
-                        image:rideController.tripDetails!.vehicle != null?
-                        '${Get.find<ConfigController>().config!.imageBaseUrl!.vehicleModel!}/${rideController.tripDetails!.vehicle!.model!.image!}' : '',)),
+                      child: ImageWidget(height: 60, width: 90,
+                        image: (rideController.tripDetails!.vehicle?.photoUrl?.isNotEmpty ?? false) ?
+                        rideController.tripDetails!.vehicle!.photoUrl! :
+                        '${Get.find<ConfigController>().config!.imageBaseUrl!.vehicleModel!}/${rideController.tripDetails!.vehicle!.model!.image!}',)),
                 ),
 
               ]) : const SizedBox(),

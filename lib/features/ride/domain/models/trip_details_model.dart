@@ -275,6 +275,8 @@ class Vehicle {
   List<String>? documents;
   int? isActive;
   String? createdAt;
+  String? color;
+  String? photoUrl;
 
   Vehicle(
       {this.model,
@@ -286,6 +288,8 @@ class Vehicle {
         this.ownership,
         this.documents,
         this.isActive,
+        this.color,
+        this.photoUrl,
         this.createdAt});
 
   Vehicle.fromJson(Map<String, dynamic> json) {
@@ -299,6 +303,8 @@ class Vehicle {
     documents = json['documents'].cast<String>();
     isActive = json['is_active'] ? 1 : 0;
     createdAt = json['created_at'];
+    color = json['color']?.toString();
+    photoUrl = json['photo_url']?.toString();
   }
 
   Map<String, dynamic> toJson() {

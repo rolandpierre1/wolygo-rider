@@ -763,5 +763,19 @@
   "topup_amount_range": "Saisissez un montant entre 5 $ et 500 $.",
   "topup_success": "Portefeuille rechargé avec succès.",
   "topup_not_completed": "La recharge n'a pas été effectuée. Si votre carte a été débitée, votre solde sera mis à jour sous peu.",
-  "wallet_topup": "Recharge du portefeuille"
+  "wallet_topup": "Recharge du portefeuille",
+  "color_black": "Noir",
+  "color_white": "Blanc",
+  "color_gray": "Gris",
+  "color_silver": "Argent",
+  "color_red": "Rouge",
+  "color_blue": "Bleu",
+  "color_green": "Vert",
+  "color_yellow": "Jaune",
+  "color_orange": "Orange",
+  "color_brown": "Brun",
+  "color_beige": "Beige",
+  "color_gold": "Or",
+  "color_purple": "Violet",
+  "color_pink": "Rose"
 }

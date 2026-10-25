@@ -5,6 +5,7 @@ import 'package:ride_sharing_user_app/util/dimensions.dart';
 import 'package:ride_sharing_user_app/util/styles.dart';
 import 'package:ride_sharing_user_app/features/splash/controllers/config_controller.dart';
 import 'package:ride_sharing_user_app/common_widgets/image_widget.dart';
+import 'package:ride_sharing_user_app/common_widgets/vehicle_color_dot.dart';
 
 class RiderInfo extends StatelessWidget {
   final TripDetails tripDetails;
@@ -76,6 +77,28 @@ class RiderInfo extends StatelessWidget {
               style: textMedium.copyWith(fontSize: Dimensions.fontSizeDefault),
               overflow: TextOverflow.ellipsis,
             ),
+
+            if(tripDetails.vehicle?.photoUrl != null && tripDetails.vehicle!.photoUrl!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeExtraSmall),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                  child: ImageWidget(height: 60, width: 90, image: tripDetails.vehicle!.photoUrl!),
+                ),
+              ),
+
+            if(tripDetails.vehicle?.color != null && tripDetails.vehicle!.color!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeExtraSmall),
+                child: Row(children: [
+                  VehicleColorDot(colorKey: tripDetails.vehicle!.color),
+                  const SizedBox(width: Dimensions.paddingSizeExtraSmall),
+                  Flexible(child: Text('color_${tripDetails.vehicle!.color}'.tr,
+                    style: textRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
+                    overflow: TextOverflow.ellipsis,
+                  )),
+                ]),
+              ),
 
             Row(children: [
               Flexible(child: Text(
