@@ -31,10 +31,10 @@ class DottedBorderCard extends StatelessWidget {
               child: Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraLarge, vertical: Dimensions.paddingSizeDefault),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
 
-                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [Text('send'.tr,style: textMedium.copyWith(color: Theme.of(context).primaryColor,fontSize: Dimensions.fontSizeOverLarge),),
                       Padding(padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-                        child: Text('safest_delivery'.tr,style: textMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeDefault)))]),
+                        child: Text('safest_delivery'.tr,style: textMedium.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.fontSizeDefault)))])),
                   const Spacer(),
                   Image.asset(Images.parcelDeliveryman,height: 60,),
                   const SizedBox()
