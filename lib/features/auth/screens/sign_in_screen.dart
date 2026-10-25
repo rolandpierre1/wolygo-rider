@@ -121,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
 
             Row(children: [
-              Padding(
+              Flexible(child: Padding(
                 padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
                 child: InkWell(
                   onTap: () => authController.toggleRememberMe(),
@@ -134,27 +134,28 @@ class _SignInScreenState extends State<SignInScreen> {
                       onChanged: (bool? isChecked) => authController.toggleRememberMe(),
                     )),
                     const SizedBox(width: Dimensions.paddingSizeExtraSmall),
-                    Text(
+                    Flexible(child: Text(
                       'remember'.tr,
+                      maxLines: 1, overflow: TextOverflow.ellipsis,
                       style: textRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
-                    ),
+                    )),
                   ]),
                 ),
-              ),
+              )),
 
-              const Spacer(),
+              const SizedBox(width: Dimensions.paddingSizeExtraSmall),
 
-              Align(
+              Flexible(child: Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
                     Get.to(() => const ForgotPasswordScreen());
                   },
-                  child: Text('forgot_password'.tr, style: textRegular.copyWith(
+                  child: FittedBox(fit: BoxFit.scaleDown, child: Text('forgot_password'.tr, maxLines: 1, style: textRegular.copyWith(
                     fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor,
-                  )),
+                  ))),
                 ),
-              ),
+              )),
             ]),
 
             authController.isLoading ?
