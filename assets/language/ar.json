@@ -263,6 +263,8 @@
   "rider": "رايدر",
   "driver": "سائق",
   "to": "ل",
+  "round_trip": "ذهاب وإياب",
+  "round_trip_max_one_stop": "ذهاب وإياب: توقف واحد كحد أقصى",
   "add_entrance": "إضافة مدخل",
   "you_can_add_multiple_route_to": "يمكنك إضافة مسارات متعددة إلى",
   "done": "منتهي",

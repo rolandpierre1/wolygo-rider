@@ -50,6 +50,10 @@ class LocationController extends GetxController implements GetxService {
   int currentExtraRoute = 0;
   bool extraOneRoute = false;
   bool extraTwoRoute = false;
+  bool roundTrip = false;
+  Address? _rtSavedTo, _rtSavedExtra1, _rtSavedExtra2;
+  bool _rtSavedOne = false, _rtSavedTwo = false;
+  int _rtSavedCur = 0;
   bool resultShow = false;
   bool picking = false;
   double topPosition = 120;
@@ -123,6 +127,42 @@ class LocationController extends GetxController implements GetxService {
     getCurrentLocation();
   }
 
+
+  void setRoundTrip(bool value) {
+    roundTrip = value;
+    update();
+  }
+
+  /// Aller-retour : la destination choisie devient un arrêt et le point de départ devient la destination finale.
+  void applyRoundTrip() {
+    _rtSavedTo = toAddress;
+    _rtSavedExtra1 = extraRouteAddress;
+    _rtSavedExtra2 = extraRouteTwoAddress;
+    _rtSavedOne = extraOneRoute;
+    _rtSavedTwo = extraTwoRoute;
+    _rtSavedCur = currentExtraRoute;
+    final Address? dest = toAddress;
+    if (extraOneRoute) {
+      extraRouteTwoAddress = dest;
+      extraTwoRoute = true;
+      currentExtraRoute = 2;
+    } else {
+      extraRouteAddress = dest;
+      extraOneRoute = true;
+      currentExtraRoute = 1;
+    }
+    toAddress = fromAddress;
+  }
+
+  void undoRoundTrip() {
+    toAddress = _rtSavedTo;
+    extraRouteAddress = _rtSavedExtra1;
+    extraRouteTwoAddress = _rtSavedExtra2;
+    extraOneRoute = _rtSavedOne;
+    extraTwoRoute = _rtSavedTwo;
+    currentExtraRoute = _rtSavedCur;
+    update();
+  }
 
   void setExtraRoute({bool remove = false}) {
     if(remove){

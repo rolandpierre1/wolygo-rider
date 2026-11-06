@@ -263,6 +263,8 @@
   "rider": "Rider",
   "driver": "Driver",
   "to": "To",
+  "round_trip": "Round trip",
+  "round_trip_max_one_stop": "Round trip: 1 stop maximum",
   "add_entrance": "Add Entrance",
   "you_can_add_multiple_route_to": "You can add multiple routes",
   "done": "Done",

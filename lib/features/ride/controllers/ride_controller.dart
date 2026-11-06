@@ -346,6 +346,7 @@ class RideController extends GetxController implements GetxService {
   }
 
   void clearExtraRoute(){
+    Get.find<LocationController>().roundTrip = false;
     Get.find<LocationController>().extraOneRoute = false;
     Get.find<LocationController>().extraTwoRoute = false;
     Get.find<LocationController>().extraRouteAddress = null;

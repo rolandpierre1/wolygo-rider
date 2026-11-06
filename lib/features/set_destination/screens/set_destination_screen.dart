@@ -418,6 +418,23 @@ class _SetDestinationScreenState extends State<SetDestinationScreen> {
                         ]),
 
                         Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeExtraLarge),
+                          child: Row(children: [
+                            Icon(Icons.sync_alt, color: Colors.white.withOpacity(0.85)),
+                            const SizedBox(width: Dimensions.paddingSizeSmall),
+                            Expanded(child: Text(
+                              'round_trip'.tr,
+                              style: textMedium.copyWith(color: Colors.white, fontSize: Dimensions.fontSizeLarge),
+                            )),
+                            Switch(
+                              value: locationController.roundTrip,
+                              activeColor: Colors.white,
+                              onChanged: (value) => locationController.setRoundTrip(value),
+                            ),
+                          ]),
+                        ),
+
+                        Padding(
                           padding: const EdgeInsets.fromLTRB(
                             Dimensions.paddingSizeExtraLarge, Dimensions.paddingSizeSmall,
                             Dimensions.paddingSizeExtraLarge,Dimensions.paddingSizeExtraLarge,
@@ -456,14 +473,32 @@ class _SetDestinationScreenState extends State<SetDestinationScreen> {
                                     showCustomSnackBar('destination_location_is_required'.tr);
                                     FocusScope.of(context).requestFocus(destinationLocationFocus);
                                   }else{
+                                    final bool isRoundTrip = locationController.roundTrip;
+                                    if(isRoundTrip && locationController.extraTwoRoute) {
+                                      showCustomSnackBar('round_trip_max_one_stop'.tr, isError: true);
+                                      return;
+                                    }
+                                    if(isRoundTrip) {
+                                      locationController.applyRoundTrip();
+                                    }
                                     rideController.getEstimatedFare(false).then((value) {
                                       if(value.statusCode == 200) {
-                                        Get.find<LocationController>().initAddLocationData();
+                                        final LocationController lc = Get.find<LocationController>();
+                                        final bool keepOne = lc.extraOneRoute, keepTwo = lc.extraTwoRoute;
+                                        final int keepCur = lc.currentExtraRoute;
+                                        lc.initAddLocationData();
+                                        if(isRoundTrip) {
+                                          lc.extraOneRoute = keepOne;
+                                          lc.extraTwoRoute = keepTwo;
+                                          lc.currentExtraRoute = keepCur;
+                                        }
                                         Get.to(() => const MapScreen(
                                           fromScreen: MapScreenType.ride,
                                           isShowCurrentPosition: false,
                                         ));
                                         Get.find<RideController>().updateRideCurrentState(RideState.initial);
+                                      } else if(isRoundTrip) {
+                                        locationController.undoRoundTrip();
                                       }
                                     });
                                     // Get.find<RideController>().getDirection();

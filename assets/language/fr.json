@@ -262,6 +262,8 @@
   "rider": "Chauffeur",
   "driver": "Chauffeur",
   "to": "À",
+  "round_trip": "Aller-retour",
+  "round_trip_max_one_stop": "Aller-retour : 1 arrêt maximum",
   "add_entrance": "Ajouter un arrêt",
   "you_can_add_multiple_route_to": "Vous pouvez ajouter plusieurs arrêts",
   "done": "Fait",
