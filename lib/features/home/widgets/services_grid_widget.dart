@@ -1,24 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ride_sharing_user_app/data/api_client.dart';
 import 'package:ride_sharing_user_app/features/parcel/screens/parcel_screen.dart';
 import 'package:ride_sharing_user_app/features/set_destination/screens/set_destination_screen.dart';
 import 'package:ride_sharing_user_app/util/dimensions.dart';
 import 'package:ride_sharing_user_app/util/styles.dart';
 
 /// Grille de services de l'accueil (Transport, Repas, Colis, Déménagement, Location, Magasin).
-/// Transport et Colis ouvrent les écrans existants; les autres affichent « Bientôt » pour l'instant.
-class ServicesGridWidget extends StatelessWidget {
+/// L'admin active chaque service (On/Off). Un service éteint affiche « Bientôt ».
+class ServicesGridWidget extends StatefulWidget {
   const ServicesGridWidget({super.key});
+
+  @override
+  State<ServicesGridWidget> createState() => _ServicesGridWidgetState();
+}
+
+class _ServicesGridWidgetState extends State<ServicesGridWidget> {
+  // Valeurs par défaut si le serveur ne répond pas: seuls Transport et Colis sont actifs.
+  Map<String, bool> _enabled = {'transport': true, 'parcel': true};
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final res = await Get.find<ApiClient>().getData('/api/customer/services');
+      if (res.statusCode == 200 && res.body is Map && res.body['services'] is List) {
+        final Map<String, bool> m = {};
+        for (final s in (res.body['services'] as List)) {
+          if (s is Map && s['key'] != null) {
+            m[s['key'].toString()] = s['enabled'] == true;
+          }
+        }
+        if (m.isNotEmpty && mounted) setState(() => _enabled = m);
+      }
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
     final items = <_Service>[
-      _Service('service_transport'.tr, Icons.directions_car_filled_outlined, () => Get.to(() => const SetDestinationScreen())),
-      _Service('service_food'.tr, Icons.restaurant_outlined, null),
-      _Service('parcel'.tr, Icons.inventory_2_outlined, () => Get.to(() => const ParcelScreen())),
-      _Service('service_moving'.tr, Icons.local_shipping_outlined, null),
-      _Service('service_rental'.tr, Icons.key_outlined, null),
-      _Service('service_store'.tr, Icons.storefront_outlined, null),
+      _Service('service_transport'.tr, Icons.directions_car_filled_outlined, _enabled['transport'] ?? false, () => Get.to(() => const SetDestinationScreen())),
+      _Service('service_food'.tr, Icons.restaurant_outlined, _enabled['food'] ?? false, null),
+      _Service('parcel'.tr, Icons.inventory_2_outlined, _enabled['parcel'] ?? false, () => Get.to(() => const ParcelScreen())),
+      _Service('service_moving'.tr, Icons.local_shipping_outlined, _enabled['moving'] ?? false, null),
+      _Service('service_rental'.tr, Icons.key_outlined, _enabled['rental'] ?? false, null),
+      _Service('service_store'.tr, Icons.storefront_outlined, _enabled['store'] ?? false, null),
     ];
     return GridView.count(
       crossAxisCount: 2, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
@@ -28,11 +58,11 @@ class ServicesGridWidget extends StatelessWidget {
   }
 
   Widget _tile(BuildContext context, _Service s) {
-    final soon = s.onTap == null;
+    final soon = !s.enabled || s.onTap == null;
     final color = Theme.of(context).textTheme.bodyMedium!.color!;
     return InkWell(
       borderRadius: BorderRadius.circular(30),
-      onTap: s.onTap ?? () => Get.snackbar(s.label, 'service_coming_soon'.tr, snackPosition: SnackPosition.BOTTOM, margin: const EdgeInsets.all(12)),
+      onTap: (s.enabled ? s.onTap : null) ?? () => Get.snackbar(s.label, 'service_coming_soon'.tr, snackPosition: SnackPosition.BOTTOM, margin: const EdgeInsets.all(12)),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
@@ -59,6 +89,6 @@ class ServicesGridWidget extends StatelessWidget {
 }
 
 class _Service {
-  final String label; final IconData icon; final VoidCallback? onTap;
-  _Service(this.label, this.icon, this.onTap);
+  final String label; final IconData icon; final bool enabled; final VoidCallback? onTap;
+  _Service(this.label, this.icon, this.enabled, this.onTap);
 }

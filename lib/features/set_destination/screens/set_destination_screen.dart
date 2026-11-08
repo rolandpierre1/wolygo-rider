@@ -65,8 +65,10 @@ class _SetDestinationScreenState extends State<SetDestinationScreen> {
         body: BodyWidget(
           appBar: AppBarWidget(title: 'select_location'.tr,
             onBackPressed: () {
-              if(Navigator.canPop(context)) {
-                Get.back();
+              FocusScope.of(context).unfocus();
+              final NavigatorState nav = Navigator.of(context);
+              if(nav.canPop()) {
+                nav.pop();
               }else {
                 Get.offAll(()=> const DashboardScreen());
               }
