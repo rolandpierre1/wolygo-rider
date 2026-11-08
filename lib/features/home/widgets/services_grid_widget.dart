@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/data/api_client.dart';
+import 'package:ride_sharing_user_app/features/moving/screens/moving_screen.dart';
 import 'package:ride_sharing_user_app/features/parcel/screens/parcel_screen.dart';
 import 'package:ride_sharing_user_app/features/set_destination/screens/set_destination_screen.dart';
 import 'package:ride_sharing_user_app/util/dimensions.dart';
@@ -46,7 +47,7 @@ class _ServicesGridWidgetState extends State<ServicesGridWidget> {
       _Service('service_transport'.tr, Icons.directions_car_filled_outlined, _enabled['transport'] ?? false, () => Get.to(() => const SetDestinationScreen())),
       _Service('service_food'.tr, Icons.restaurant_outlined, _enabled['food'] ?? false, null),
       _Service('parcel'.tr, Icons.inventory_2_outlined, _enabled['parcel'] ?? false, () => Get.to(() => const ParcelScreen())),
-      _Service('service_moving'.tr, Icons.local_shipping_outlined, _enabled['moving'] ?? false, null),
+      _Service('service_moving'.tr, Icons.local_shipping_outlined, _enabled['moving'] ?? false, () => Get.to(() => const MovingScreen())),
       _Service('service_rental'.tr, Icons.key_outlined, _enabled['rental'] ?? false, null),
       _Service('service_store'.tr, Icons.storefront_outlined, _enabled['store'] ?? false, null),
     ];
