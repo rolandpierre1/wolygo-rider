@@ -5,6 +5,7 @@ import 'package:ride_sharing_user_app/features/coupon/controllers/coupon_control
 import 'package:ride_sharing_user_app/features/home/widgets/banner_view.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/best_offers_widget.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/category_view.dart';
+import 'package:ride_sharing_user_app/features/home/widgets/services_grid_widget.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/coupon_home_widget.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/home_map_view.dart';
 import 'package:ride_sharing_user_app/features/home/widgets/home_search_widget.dart';
@@ -151,6 +152,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 child: Column(children: [
                                   const BannerView(),
+
+                                  const Padding(
+                                    padding: EdgeInsets.only(top:Dimensions.paddingSize),
+                                    child: ServicesGridWidget(),
+                                  ),
 
                                   const Padding(
                                     padding: EdgeInsets.only(top:Dimensions.paddingSize),
