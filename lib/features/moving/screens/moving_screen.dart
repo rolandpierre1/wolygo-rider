@@ -6,6 +6,7 @@ import 'package:ride_sharing_user_app/helper/display_helper.dart';
 import 'package:ride_sharing_user_app/util/app_constants.dart';
 import 'package:ride_sharing_user_app/util/dimensions.dart';
 import 'package:ride_sharing_user_app/util/styles.dart';
+import 'package:ride_sharing_user_app/features/moving/screens/moving_pay_screen.dart';
 
 /// Écran « Déménagement » : choix du forfait, articles en plus, adresses, date, prix, confirmation.
 class MovingScreen extends StatefulWidget {
@@ -24,6 +25,8 @@ class _Place {
 
 class _MovingScreenState extends State<MovingScreen> {
   final ApiClient _api = Get.find<ApiClient>();
+  TextStyle get _sb => textSemiBold.copyWith(color: Colors.white);
+  TextStyle get _rg => textRegular.copyWith(color: Colors.white);
 
   bool _loading = true;
   bool _sending = false;
@@ -201,24 +204,42 @@ class _MovingScreenState extends State<MovingScreen> {
         'move_time': _time == null ? null : '${_two(_time!.hour)}:${_two(_time!.minute)}',
         'notes': _notesCtrl.text.trim().isEmpty ? null : _notesCtrl.text.trim(),
       });
-    final res = await _api.postData('/api/customer/moving/order', body);
+    final res = await _api.postData('/api/customer/moving/checkout', body);
+    if (!mounted) return;
+    if (res.statusCode == 401) {
+      setState(() => _sending = false);
+      showCustomSnackBar('Connecte-toi pour envoyer ta demande.');
+      return;
+    }
+    if (res.statusCode != 200 || res.body is! Map || res.body['checkout_url'] == null) {
+      setState(() => _sending = false);
+      showCustomSnackBar('Paiement impossible pour le moment. Réessaie.');
+      return;
+    }
+    final token = '${res.body['token']}';
+    await Get.to(() => MovingPayScreen(url: '${res.body['checkout_url']}'));
+    // Vérifie le paiement (même si la fenêtre a été fermée, au cas où il est passé).
+    bool paid = false;
+    for (int i = 0; i < 3 && !paid; i++) {
+      final v = await _api.postData('/api/customer/moving/checkout/verify', {'token': token});
+      paid = v.statusCode == 200 || v.statusCode == 202;
+      if (!paid) await Future.delayed(const Duration(seconds: 2));
+    }
     if (!mounted) return;
     setState(() => _sending = false);
-    if (res.statusCode == 200) {
+    if (paid) {
       await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (c) => AlertDialog(
-          title: const Text('Demande envoyée ✅'),
-          content: const Text('Ta demande de déménagement est enregistrée. Un déménageur WolyGo sera assigné bientôt.'),
+          title: const Text('Paiement reçu ✅'),
+          content: const Text('Nous cherchons un déménageur WolyGo pour ta demande. Tu seras informé dès qu\'il accepte.'),
           actions: [TextButton(onPressed: () => Navigator.of(c).pop(), child: const Text('OK'))],
         ),
       );
       if (mounted) Navigator.of(context).pop();
-    } else if (res.statusCode == 401) {
-      showCustomSnackBar('Connecte-toi pour envoyer ta demande.');
     } else {
-      showCustomSnackBar('Envoi impossible. Vérifie les informations et réessaie.');
+      showCustomSnackBar('Paiement non confirmé. Aucune commande créée.');
     }
   }
 
@@ -253,7 +274,8 @@ class _MovingScreenState extends State<MovingScreen> {
                   if (_suggestions.isNotEmpty && _suggestFor == 'to') _suggestionList('to'),
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: const Text('Aller-retour'),
+                    title: Text('Aller-retour', style: _rg),
+                    activeColor: Colors.white,
                     value: _roundTrip,
                     onChanged: (v) {
                       setState(() => _roundTrip = v);
@@ -266,16 +288,18 @@ class _MovingScreenState extends State<MovingScreen> {
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: _pickDate,
-                        icon: const Icon(Icons.calendar_month_outlined),
-                        label: Text(_date == null ? 'Date' : '${_date!.year}-${_two(_date!.month)}-${_two(_date!.day)}'),
+                        style: OutlinedButton.styleFrom(foregroundColor: Colors.white, side: const BorderSide(color: Colors.white70)),
+                        icon: const Icon(Icons.calendar_month_outlined, color: Colors.white),
+                        label: Text(_date == null ? 'Date' : '${_date!.year}-${_two(_date!.month)}-${_two(_date!.day)}', style: const TextStyle(color: Colors.white)),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: _pickTime,
-                        icon: const Icon(Icons.schedule),
-                        label: Text(_time == null ? 'Heure' : '${_two(_time!.hour)}:${_two(_time!.minute)}'),
+                        style: OutlinedButton.styleFrom(foregroundColor: Colors.white, side: const BorderSide(color: Colors.white70)),
+                        icon: const Icon(Icons.schedule, color: Colors.white),
+                        label: Text(_time == null ? 'Heure' : '${_two(_time!.hour)}:${_two(_time!.minute)}', style: const TextStyle(color: Colors.white)),
                       ),
                     ),
                   ]),
@@ -283,7 +307,9 @@ class _MovingScreenState extends State<MovingScreen> {
                   TextField(
                     controller: _notesCtrl,
                     maxLines: 2,
-                    decoration: const InputDecoration(labelText: 'Notes (étage, ascenseur, accès…)', border: OutlineInputBorder()),
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: Colors.white,
+                    decoration: const InputDecoration(labelText: 'Notes (étage, ascenseur, accès…)', labelStyle: TextStyle(color: Colors.white70), enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white54)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)), border: OutlineInputBorder()),
                   ),
                   const SizedBox(height: 16),
                   _summary(primary),
@@ -293,7 +319,7 @@ class _MovingScreenState extends State<MovingScreen> {
                     child: ElevatedButton(
                       onPressed: _sending ? null : _submit,
                       style: ElevatedButton.styleFrom(backgroundColor: primary, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-                      child: _sending ? const SizedBox(height: 22, width: 22, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Text('Confirmer la demande'),
+                      child: _sending ? const SizedBox(height: 22, width: 22, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Text('Payer et chercher un déménageur'),
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -305,17 +331,17 @@ class _MovingScreenState extends State<MovingScreen> {
 
   Widget _title(String t) => Padding(
         padding: const EdgeInsets.only(bottom: 8, top: 4),
-        child: Text(t, style: textSemiBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+        child: Text(t, style: _sb.copyWith(fontSize: Dimensions.fontSizeLarge)),
       );
 
   Widget _thumb(String? url, double size, IconData fallback) {
     if (url == null || url.isEmpty) {
-      return Container(width: size, height: size, decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(10)), child: Icon(fallback, color: Colors.black38));
+      return Container(width: size, height: size, decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(10)), child: Icon(fallback, color: Colors.white70));
     }
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Image.network(url, width: size, height: size, fit: BoxFit.cover,
-          errorBuilder: (c, e, s) => Container(width: size, height: size, color: Colors.black12, child: Icon(fallback, color: Colors.black38))),
+          errorBuilder: (c, e, s) => Container(width: size, height: size, color: Colors.white24, child: Icon(fallback, color: Colors.white70))),
     );
   }
 
@@ -331,21 +357,21 @@ class _MovingScreenState extends State<MovingScreen> {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
+          color: Colors.white.withOpacity(.10),
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: selected ? primary : Colors.black12, width: selected ? 2 : 1),
+          border: Border.all(color: selected ? Colors.white : Colors.white24, width: selected ? 2 : 1),
         ),
         child: Row(children: [
           _thumb(p['image'] as String?, 64, Icons.local_shipping_outlined),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('${p['name']}', style: textSemiBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+              Text('${p['name']}', style: _sb.copyWith(fontSize: Dimensions.fontSizeLarge)),
               const SizedBox(height: 2),
-              Text('${_money(p['base_price'] as num)} + ${_money(p['per_km_price'] as num)}/km', style: textRegular.copyWith(color: Theme.of(context).hintColor)),
+              Text('À partir de ${_money(p['base_price'] as num)}', style: _rg.copyWith(color: Colors.white70)),
             ]),
           ),
-          if (selected) Icon(Icons.check_circle, color: primary),
+          if (selected) const Icon(Icons.check_circle, color: Colors.white),
         ]),
       ),
     );
@@ -354,17 +380,19 @@ class _MovingScreenState extends State<MovingScreen> {
   Widget _itemsSection() {
     return ExpansionTile(
       tilePadding: EdgeInsets.zero,
-      title: Text(_qty.values.fold<int>(0, (a, b) => a + b) == 0 ? 'Ajouter des articles' : '${_qty.values.fold<int>(0, (a, b) => a + b)} article(s) ajouté(s)'),
+      iconColor: Colors.white,
+      collapsedIconColor: Colors.white,
+      title: Text(_qty.values.fold<int>(0, (a, b) => a + b) == 0 ? 'Ajouter des articles' : '${_qty.values.fold<int>(0, (a, b) => a + b)} article(s) ajouté(s)', style: _rg),
       children: [
         for (final it in _items)
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: _thumb(it['image'] as String?, 44, Icons.chair_alt_outlined),
-            title: Text('${it['name']}'),
-            subtitle: Text(_money(it['price'] as num)),
+            title: Text('${it['name']}', style: _rg),
+            subtitle: Text(_money(it['price'] as num), style: const TextStyle(color: Colors.white70)),
             trailing: Row(mainAxisSize: MainAxisSize.min, children: [
               IconButton(
-                icon: const Icon(Icons.remove_circle_outline),
+                icon: const Icon(Icons.remove_circle_outline, color: Colors.white),
                 onPressed: (_qty[it['id'] as int] ?? 0) > 0
                     ? () {
                         setState(() => _qty[it['id'] as int] = (_qty[it['id'] as int] ?? 0) - 1);
@@ -372,9 +400,9 @@ class _MovingScreenState extends State<MovingScreen> {
                       }
                     : null,
               ),
-              Text('${_qty[it['id'] as int] ?? 0}'),
+              Text('${_qty[it['id'] as int] ?? 0}', style: _rg),
               IconButton(
-                icon: const Icon(Icons.add_circle_outline),
+                icon: const Icon(Icons.add_circle_outline, color: Colors.white),
                 onPressed: () {
                   setState(() => _qty[it['id'] as int] = (_qty[it['id'] as int] ?? 0) + 1);
                   _refreshQuote();
@@ -390,9 +418,14 @@ class _MovingScreenState extends State<MovingScreen> {
     return TextField(
       controller: c,
       onChanged: (t) => _onTyping(which, t),
+      style: const TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
       decoration: InputDecoration(
         hintText: hint,
-        prefixIcon: Icon(icon),
+        hintStyle: const TextStyle(color: Colors.white60),
+        prefixIcon: Icon(icon, color: Colors.white),
+        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white54)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Colors.white)),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         suffixIcon: (which == 'from' ? _from : _to) != null ? const Icon(Icons.check_circle, color: Colors.green) : null,
       ),
@@ -402,13 +435,13 @@ class _MovingScreenState extends State<MovingScreen> {
   Widget _suggestionList(String which) {
     return Container(
       margin: const EdgeInsets.only(top: 4),
-      decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.black12)),
+      decoration: BoxDecoration(color: Colors.white.withOpacity(.12), borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.white24)),
       child: Column(children: [
         for (final s in _suggestions.take(5))
           ListTile(
             dense: true,
-            leading: const Icon(Icons.place_outlined, size: 20),
-            title: Text('${s['description']}', maxLines: 2, overflow: TextOverflow.ellipsis),
+            leading: const Icon(Icons.place_outlined, size: 20, color: Colors.white),
+            title: Text('${s['description']}', maxLines: 2, overflow: TextOverflow.ellipsis, style: _rg),
             onTap: () => _pick(which, s),
           ),
       ]),
@@ -423,26 +456,25 @@ class _MovingScreenState extends State<MovingScreen> {
     if (_quote == null) {
       return Container(
         padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(color: primary.withOpacity(.08), borderRadius: BorderRadius.circular(14)),
-        child: Text(_quoting ? 'Calcul du prix…' : 'Choisis les deux adresses pour voir le prix.'),
+        decoration: BoxDecoration(color: Colors.white.withOpacity(.10), borderRadius: BorderRadius.circular(14)),
+        child: Text(_quoting ? 'Calcul du prix…' : 'Choisis les deux adresses pour voir le prix.', style: _rg),
       );
     }
     final q = _quote!;
     Widget row(String a, String b, {bool bold = false}) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(a, style: bold ? textSemiBold : textRegular),
-            Text(b, style: bold ? textSemiBold.copyWith(fontSize: Dimensions.fontSizeLarge) : textRegular),
+            Text(a, style: bold ? _sb : _rg),
+            Text(b, style: bold ? _sb.copyWith(fontSize: Dimensions.fontSizeLarge) : _rg),
           ]),
         );
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(color: primary.withOpacity(.08), borderRadius: BorderRadius.circular(14)),
+      decoration: BoxDecoration(color: Colors.white.withOpacity(.10), borderRadius: BorderRadius.circular(14)),
       child: Column(children: [
-        row('Forfait ${p['name']}', _money(q['base_price'] as num)),
-        row('Distance (${q['distance_km']} km)', _money(q['distance_price'] as num)),
+        row('Déménagement – ${p['name']}', _money((q['base_price'] as num) + (q['distance_price'] as num))),
         if ((q['items_total'] as num) > 0) row('Articles', _money(q['items_total'] as num)),
-        const Divider(),
+        const Divider(color: Colors.white38),
         row('Total', _money(q['total'] as num), bold: true),
       ]),
     );
