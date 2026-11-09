@@ -368,7 +368,7 @@ class _MovingScreenState extends State<MovingScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('${p['name']}', style: _sb.copyWith(fontSize: Dimensions.fontSizeLarge)),
               const SizedBox(height: 2),
-              Text('À partir de ${_money(p['base_price'] as num)}', style: _rg.copyWith(color: Colors.white70)),
+              Text(_money(p['base_price'] as num), style: _rg.copyWith(color: Colors.white70)),
             ]),
           ),
           if (selected) const Icon(Icons.check_circle, color: Colors.white),
