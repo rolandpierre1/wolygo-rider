@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ride_sharing_user_app/data/api_client.dart';
+import 'package:ride_sharing_user_app/features/food/screens/food_screen.dart';
 import 'package:ride_sharing_user_app/features/moving/screens/moving_screen.dart';
 import 'package:ride_sharing_user_app/features/parcel/screens/parcel_screen.dart';
 import 'package:ride_sharing_user_app/features/set_destination/screens/set_destination_screen.dart';
@@ -71,7 +72,7 @@ class _ServicesGridWidgetState extends State<ServicesGridWidget> {
   Widget build(BuildContext context) {
     final items = <_Service>[
       _Service('service_transport'.tr, Icons.directions_car_filled_outlined, _enabled['transport'] ?? false, () => Get.to(() => const SetDestinationScreen())),
-      _Service('service_food'.tr, Icons.restaurant_outlined, _enabled['food'] ?? false, () => _info('service_food'.tr, 'Le service Repas ouvre bientôt dans votre ville.')),
+      _Service('service_food'.tr, Icons.restaurant_outlined, _enabled['food'] ?? false, () => Get.to(() => const FoodScreen())),
       _Service('parcel'.tr, Icons.inventory_2_outlined, _enabled['parcel'] ?? false, () => Get.to(() => const ParcelScreen())),
       _Service('service_moving'.tr, Icons.local_shipping_outlined, _enabled['moving'] ?? false, () => Get.to(() => const MovingScreen())),
       _Service('service_rental'.tr, Icons.key_outlined, _enabled['rental'] ?? false, () => _rental()),
