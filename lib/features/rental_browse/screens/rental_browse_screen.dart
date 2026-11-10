@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/data/api_client.dart';
+import 'package:ride_sharing_user_app/features/rental_browse/screens/rental_detail_screen.dart';
+import 'package:ride_sharing_user_app/features/rental_browse/screens/my_rentals_screen.dart';
 
 /// Location de véhicules (côté client): on voit les véhicules proposés.
-/// La location elle-même se fait dans l'app chauffeur WolyGo.
+/// Touche un véhicule pour le louer.
 class RentalBrowseScreen extends StatefulWidget {
   const RentalBrowseScreen({super.key});
 
@@ -39,7 +41,9 @@ class _RentalBrowseScreenState extends State<RentalBrowseScreen> {
     final text = Theme.of(context).textTheme.bodyMedium!.color!;
     final primary = Theme.of(context).primaryColor;
     return Scaffold(
-      appBar: AppBar(title: const Text('Location de véhicules')),
+      appBar: AppBar(title: const Text('Location de véhicules'), actions: [
+        TextButton(onPressed: () => Get.to(() => const MyRentalsScreen()), child: const Text('Mes locations')),
+      ]),
       body: Column(children: [
         Container(
           width: double.infinity,
@@ -47,7 +51,7 @@ class _RentalBrowseScreenState extends State<RentalBrowseScreen> {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(color: primary.withOpacity(.1), borderRadius: BorderRadius.circular(12)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Véhicules disponibles à la location.', style: TextStyle(color: text, fontSize: 13)),
+            Text('Choisis un véhicule pour le louer.', style: TextStyle(color: text, fontSize: 13)),
           ]),
         ),
         SizedBox(
@@ -84,7 +88,9 @@ class _RentalBrowseScreenState extends State<RentalBrowseScreen> {
                         itemBuilder: (c, i) {
                           final v = Map<String, dynamic>.from(_items[i] as Map);
                           final photos = (v['photos'] as List?) ?? [];
-                          return Card(
+                          return InkWell(
+                            onTap: () => Get.to(() => RentalDetailScreen(vehicle: v)),
+                            child: Card(
                             margin: const EdgeInsets.only(bottom: 12),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                             clipBehavior: Clip.antiAlias,
@@ -109,7 +115,7 @@ class _RentalBrowseScreenState extends State<RentalBrowseScreen> {
                                 ),
                               ),
                             ]),
-                          );
+                          ));
                         },
                       ),
                     ),
