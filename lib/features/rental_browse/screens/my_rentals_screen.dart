@@ -141,6 +141,12 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                             Text(_dep['${b['deposit_status']}'] ?? '', style: const TextStyle(fontSize: 12.5)),
                             if ((b['deposit_note'] ?? '').toString().isNotEmpty) Text('Note: ${b['deposit_note']}', style: const TextStyle(fontSize: 12.5)),
                             if ((b['owner'] ?? '').toString().isNotEmpty) Text('Propriétaire: ${b['owner']}'),
+                            if ((b['owner_address'] ?? '').toString().isNotEmpty)
+                              TextButton.icon(
+                                onPressed: () => launchUrl(Uri.parse('https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent('${b['owner_address']}')}'), mode: LaunchMode.externalApplication),
+                                icon: const Icon(Icons.place, size: 18),
+                                label: Text('Récupérer le véhicule : ${b['owner_address']}'),
+                              ),
                             if ((b['owner_phone'] ?? '').toString().isNotEmpty)
                               TextButton.icon(
                                 onPressed: () => launchUrl(Uri.parse('tel:${b['owner_phone']}')),

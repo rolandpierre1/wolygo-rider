@@ -70,12 +70,24 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
     if (!mounted) return;
     setState(() => _busy = false);
     if (paid) {
+      String info = '';
+      try {
+        final r = await _api.getData('/api/customer/rental/bookings');
+        final l = (r.body['bookings'] as List?) ?? [];
+        if (l.isNotEmpty) {
+          final b = l.first;
+          info = '\n\nRécupère le véhicule chez : ${b['owner']}'
+              '${(b['owner_address'] ?? '').toString().isNotEmpty ? '\nAdresse : ${b['owner_address']}' : ''}'
+              '${(b['owner_phone'] ?? '').toString().isNotEmpty ? '\nTéléphone : ${b['owner_phone']}' : ''}'
+              '\nDébut : ${b['start_date']}';
+        }
+      } catch (_) {}
       await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (c) => AlertDialog(
           title: const Text('Location confirmée ✅'),
-          content: const Text('Ton paiement est reçu. Le propriétaire te contactera pour la remise du véhicule. Retrouve ta location dans « Mes locations ».'),
+          content: Text('Ton paiement est reçu et le véhicule est réservé pour toi.$info\n\nContacte le propriétaire pour la remise des clés. Retrouve ta location dans « Mes locations ».'),
           actions: [TextButton(onPressed: () => Navigator.of(c).pop(), child: const Text('OK'))],
         ),
       );
