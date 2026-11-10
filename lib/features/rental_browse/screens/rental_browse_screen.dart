@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:ride_sharing_user_app/data/api_client.dart';
 
 /// Location de véhicules (côté client): on voit les véhicules proposés.
@@ -48,12 +47,7 @@ class _RentalBrowseScreenState extends State<RentalBrowseScreen> {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(color: primary.withOpacity(.1), borderRadius: BorderRadius.circular(12)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('La location est réservée aux chauffeurs WolyGo : ils louent dans l\'app chauffeur.', style: TextStyle(color: text, fontSize: 13)),
-            const SizedBox(height: 6),
-            GestureDetector(
-              onTap: () => launchUrl(Uri.parse('https://wolygo.com/location/inscription'), mode: LaunchMode.externalApplication),
-              child: Text('Vous avez un véhicule à louer ? Devenir partenaire', style: TextStyle(color: primary, fontWeight: FontWeight.w700, decoration: TextDecoration.underline)),
-            ),
+            Text('Véhicules disponibles à la location.', style: TextStyle(color: text, fontSize: 13)),
           ]),
         ),
         SizedBox(
