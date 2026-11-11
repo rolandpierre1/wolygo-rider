@@ -64,10 +64,18 @@ class _FoodCheckoutScreenState extends State<FoodCheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final text = Theme.of(context).textTheme.bodyMedium!.color!;
+    const text = Colors.white;
     final primary = Theme.of(context).primaryColor;
-    InputDecoration dec(String l) => InputDecoration(labelText: l, border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)));
-    final style = TextStyle(color: text);
+    OutlineInputBorder ob(Color c, double w) => OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: c, width: w));
+    InputDecoration dec(String l) => InputDecoration(
+          labelText: l,
+          labelStyle: const TextStyle(color: Colors.white70),
+          floatingLabelStyle: const TextStyle(color: Colors.white),
+          border: ob(Colors.white70, 1),
+          enabledBorder: ob(Colors.white70, 1),
+          focusedBorder: ob(Colors.white, 2),
+        );
+    const style = TextStyle(color: text);
     return Scaffold(
       appBar: AppBar(title: const Text('Ma commande')),
       body: ListView(padding: const EdgeInsets.all(16), children: [
@@ -87,14 +95,14 @@ class _FoodCheckoutScreenState extends State<FoodCheckoutScreen> {
         const SizedBox(height: 4),
         Row(children: [
           Expanded(child: Text('Total', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17, color: text))),
-          Text('${(_subtotal + _fee).toStringAsFixed(2)} \$', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17, color: primary)),
+          Text('${(_subtotal + _fee).toStringAsFixed(2)} \$', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17, color: Colors.white)),
         ]),
         const SizedBox(height: 18),
-        TextField(controller: _address, style: style, cursorColor: primary, decoration: dec('Adresse de livraison')),
+        TextField(controller: _address, style: style, cursorColor: Colors.white, decoration: dec('Adresse de livraison')),
         const SizedBox(height: 12),
-        TextField(controller: _phone, style: style, cursorColor: primary, keyboardType: TextInputType.phone, decoration: dec('Téléphone')),
+        TextField(controller: _phone, style: style, cursorColor: Colors.white, keyboardType: TextInputType.phone, decoration: dec('Téléphone')),
         const SizedBox(height: 12),
-        TextField(controller: _note, style: style, cursorColor: primary, maxLines: 2, decoration: dec('Note pour le restaurant ou le chauffeur (facultatif)')),
+        TextField(controller: _note, style: style, cursorColor: Colors.white, maxLines: 2, decoration: dec('Note pour le restaurant ou le chauffeur (facultatif)')),
         const SizedBox(height: 20),
         SizedBox(
           height: 52,
