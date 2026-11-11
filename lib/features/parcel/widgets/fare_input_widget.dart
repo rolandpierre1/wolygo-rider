@@ -114,10 +114,14 @@ class _FareInputWidgetState extends State<FareInputWidget> {
                       }
                     });
                   }else {
-                    parcelController.getSuggestedCategoryList().then((value) {
-                      if(value.statusCode == 200){
+                    // Colis: on saute l'écran de choix de véhicule. Paiement (carte) puis recherche d'un livreur.
+                    rideController.submitRideRequest('', true).then((value) {
+                      if(value.statusCode == 200) {
                         Get.find<AuthController>().saveFindingRideCreatedTime();
-                        Get.find<ParcelController>().updateParcelState(ParcelDeliveryState.suggestVehicle);
+                        Get.find<ParcelController>().updateParcelState(ParcelDeliveryState.findingRider);
+                        Get.find<MapController>().getPolyline();
+                        Get.find<MapController>().notifyMapController();
+                        parcelController.updatePaymentPerson(false);
                       }
                     });
                   }
