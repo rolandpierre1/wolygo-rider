@@ -100,6 +100,16 @@ class _FoodOrdersScreenState extends State<FoodOrdersScreen> {
                             Text('${o['restaurant']}  ·  #${o['id']}', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: text)),
                             const SizedBox(height: 4),
                             Text(_status[st] ?? st, style: TextStyle(color: primary, fontWeight: FontWeight.w600)),
+                            if ((o['code'] ?? '').toString().isNotEmpty && st != 'rejected' && st != 'cancelled')
+                              Container(
+                                margin: const EdgeInsets.only(top: 8),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(color: const Color(0xFFFFF3CD), borderRadius: BorderRadius.circular(12)),
+                                child: Row(children: [
+                                  const Expanded(child: Text('Code de ta commande (le chauffeur le présente au restaurant)', style: TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w600))),
+                                  Text('${o['code']}', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, letterSpacing: 3, color: Colors.black)),
+                                ]),
+                              ),
                             const SizedBox(height: 6),
                             for (final it in (o['items'] as List)) Text('${it['qty']} × ${it['name']}', style: TextStyle(color: text)),
                             const SizedBox(height: 4),
@@ -107,6 +117,12 @@ class _FoodOrdersScreenState extends State<FoodOrdersScreen> {
                             if (o['driver'] != null) Text('Chauffeur : ${o['driver']}', style: TextStyle(color: text)),
                             if (o['driver_phone'] != null && (st == 'picked_up' || st == 'ready' || st == 'accepted'))
                               TextButton.icon(onPressed: () => launchUrl(Uri.parse('tel:${o['driver_phone']}')), icon: const Icon(Icons.phone, size: 18), label: Text('${o['driver_phone']}')),
+                            if (st == 'delivered' && o['delivery_mode'] == 'hand') Text('Remise en main propre', style: TextStyle(color: text)),
+                            if (st == 'delivered' && o['delivery_mode'] == 'dropped') ...[
+                              Text('Déposée${(o['delivery_note'] ?? '').toString().isNotEmpty ? ' : ${o['delivery_note']}' : ''}', style: TextStyle(color: text)),
+                              if (o['delivery_proof'] != null)
+                                TextButton.icon(onPressed: () => launchUrl(Uri.parse('${o['delivery_proof']}'), mode: LaunchMode.externalApplication), icon: const Icon(Icons.photo_outlined, size: 18), label: const Text('Voir la photo de remise')),
+                            ],
                             if (st == 'placed') Padding(padding: const EdgeInsets.only(top: 6), child: OutlinedButton(onPressed: () => _cancel(o), child: const Text('Annuler et me faire rembourser'))),
                           ]),
                         ),
