@@ -1,3 +1,4 @@
+import 'package:ride_sharing_user_app/features/parcel_proof/parcel_code_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/common_widgets/button_widget.dart';
@@ -43,6 +44,7 @@ class _ParcelOngoingBottomSheetWidgetState extends State<ParcelOngoingBottomShee
           const SizedBox(height: Dimensions.paddingSizeDefault),
 
           const ActivityScreenRiderDetails(),
+            const ParcelCodeBox(),
           Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
             child: Text('trip_details'.tr,style: textBold.copyWith(fontSize: Dimensions.fontSizeDefault,color: Theme.of(context).primaryColor),),),
 

@@ -1,4 +1,5 @@
 
+import 'package:ride_sharing_user_app/features/parcel_proof/parcel_code_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/common_widgets/button_widget.dart';
@@ -42,6 +43,7 @@ class _ParcelOtpBottomSheetWidgetState extends State<ParcelOtpBottomSheetWidget>
           const Center(child: OtpWidget(fromPage: true)),
 
           const ActivityScreenRiderDetails(),
+            const ParcelCodeBox(),
           const SizedBox(height: Dimensions.paddingSizeDefault),
 
           Padding(padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),

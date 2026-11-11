@@ -1,3 +1,4 @@
+import 'package:ride_sharing_user_app/features/parcel_proof/parcel_code_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ride_sharing_user_app/common_widgets/button_widget.dart';
@@ -41,6 +42,7 @@ class _ParcelAcceptedRideWidgetState extends State<ParcelAcceptedRideWidget> {
             const SizedBox(height: Dimensions.paddingSizeDefault),
 
             const ActivityScreenRiderDetails(),
+            const ParcelCodeBox(),
             const SizedBox(height: Dimensions.paddingSizeDefault),
 
             if(rideController.tripDetails != null)
