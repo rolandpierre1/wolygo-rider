@@ -1,0 +1,118 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ride_sharing_user_app/data/api_client.dart';
+import 'package:ride_sharing_user_app/features/shop/screens/shop_orders_screen.dart';
+import 'package:ride_sharing_user_app/features/shop/screens/shop_pay_screen.dart';
+import 'package:ride_sharing_user_app/helper/display_helper.dart';
+
+/// Adresse de livraison, résumé et paiement par carte.
+class ShopCheckoutScreen extends StatefulWidget {
+  final Map<String, dynamic> magasin;
+  final List<Map<String, dynamic>> cart;
+  const ShopCheckoutScreen({super.key, required this.magasin, required this.cart});
+
+  @override
+  State<ShopCheckoutScreen> createState() => _ShopCheckoutScreenState();
+}
+
+class _ShopCheckoutScreenState extends State<ShopCheckoutScreen> {
+  final _address = TextEditingController();
+  final _phone = TextEditingController();
+  final _note = TextEditingController();
+  bool _busy = false;
+
+  ApiClient get _api => Get.find<ApiClient>();
+  double get _subtotal => widget.cart.fold(0.0, (a, e) => a + (e['price'] as num).toDouble() * (e['qty'] as int));
+  double get _fee => ((widget.magasin['delivery_fee'] ?? 0) as num).toDouble();
+
+  Future<void> _pay() async {
+    if (_address.text.trim().length < 5) return showCustomSnackBar('Entre ton adresse de livraison.');
+    if (_phone.text.trim().length < 7) return showCustomSnackBar('Entre ton numéro de téléphone.');
+    setState(() => _busy = true);
+    final res = await _api.postData('/api/customer/shop/checkout', {
+      'partner_id': widget.magasin['id'],
+      'items': widget.cart.map((e) => {'id': e['id'], 'qty': e['qty']}).toList(),
+      'address': _address.text.trim(),
+      'phone': _phone.text.trim(),
+      'note': _note.text.trim(),
+    });
+    if (!mounted) return;
+    if (res.statusCode != 200 || res.body is! Map || res.body['checkout_url'] == null) {
+      setState(() => _busy = false);
+      String msg = 'Commande impossible. Réessaie.';
+      try {
+        if (res.body is Map && res.body['message'] != null) msg = '${res.body['message']}';
+      } catch (_) {}
+      return showCustomSnackBar(msg);
+    }
+    final token = '${res.body['token']}';
+    await Get.to(() => ShopPayScreen(url: '${res.body['checkout_url']}'));
+    bool paid = false;
+    for (int i = 0; i < 3 && !paid; i++) {
+      final v = await _api.postData('/api/customer/shop/checkout/verify', {'token': token});
+      paid = v.statusCode == 200;
+      if (!paid) await Future.delayed(const Duration(seconds: 2));
+    }
+    if (!mounted) return;
+    setState(() => _busy = false);
+    if (paid) {
+      Get.offAll(() => const ShopOrdersScreen(), predicate: (r) => r.isFirst);
+    } else {
+      showCustomSnackBar('Paiement non confirmé. Aucune commande créée.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const text = Colors.white;
+    final primary = Theme.of(context).primaryColor;
+    OutlineInputBorder ob(Color c, double w) => OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: c, width: w));
+    InputDecoration dec(String l) => InputDecoration(
+          labelText: l,
+          labelStyle: const TextStyle(color: Colors.white70),
+          floatingLabelStyle: const TextStyle(color: Colors.white),
+          border: ob(Colors.white70, 1),
+          enabledBorder: ob(Colors.white70, 1),
+          focusedBorder: ob(Colors.white, 2),
+        );
+    const style = TextStyle(color: text);
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ma commande')),
+      body: ListView(padding: const EdgeInsets.all(16), children: [
+        Text('${widget.magasin['name']}', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18, color: text)),
+        const SizedBox(height: 8),
+        for (final e in widget.cart)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Row(children: [
+              Expanded(child: Text('${e['qty']} × ${e['name']}', style: style)),
+              Text('${((e['price'] as num) * (e['qty'] as int)).toStringAsFixed(2)} \$', style: style),
+            ]),
+          ),
+        const Divider(height: 24),
+        Row(children: [Expanded(child: Text('Articles', style: style)), Text('${_subtotal.toStringAsFixed(2)} \$', style: style)]),
+        Row(children: [Expanded(child: Text('Livraison', style: style)), Text('${_fee.toStringAsFixed(2)} \$', style: style)]),
+        const SizedBox(height: 4),
+        Row(children: [
+          Expanded(child: Text('Total', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17, color: text))),
+          Text('${(_subtotal + _fee).toStringAsFixed(2)} \$', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 17, color: Colors.white)),
+        ]),
+        const SizedBox(height: 18),
+        TextField(controller: _address, style: style, cursorColor: Colors.white, decoration: dec('Adresse de livraison')),
+        const SizedBox(height: 12),
+        TextField(controller: _phone, style: style, cursorColor: Colors.white, keyboardType: TextInputType.phone, decoration: dec('Téléphone')),
+        const SizedBox(height: 12),
+        TextField(controller: _note, style: style, cursorColor: Colors.white, maxLines: 2, decoration: dec('Note pour le magasin ou le chauffeur (facultatif)')),
+        const SizedBox(height: 20),
+        SizedBox(
+          height: 52,
+          child: ElevatedButton(
+            onPressed: _busy ? null : _pay,
+            style: ElevatedButton.styleFrom(backgroundColor: primary, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+            child: _busy ? const SizedBox(height: 22, width: 22, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) : const Text('Payer et commander'),
+          ),
+        ),
+      ]),
+    );
+  }
+}

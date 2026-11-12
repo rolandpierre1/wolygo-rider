@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ride_sharing_user_app/data/api_client.dart';
 import 'package:ride_sharing_user_app/features/food/screens/food_screen.dart';
+import 'package:ride_sharing_user_app/features/shop/screens/shop_screen.dart';
 import 'package:ride_sharing_user_app/features/moving/screens/moving_screen.dart';
 import 'package:ride_sharing_user_app/features/rental_browse/screens/rental_browse_screen.dart';
 import 'package:ride_sharing_user_app/features/parcel/screens/parcel_screen.dart';
@@ -77,7 +78,7 @@ class _ServicesGridWidgetState extends State<ServicesGridWidget> {
       _Service('parcel'.tr, Icons.inventory_2_outlined, _enabled['parcel'] ?? false, () => Get.to(() => const ParcelScreen())),
       _Service('service_moving'.tr, Icons.local_shipping_outlined, _enabled['moving'] ?? false, () => Get.to(() => const MovingScreen())),
       _Service('service_rental'.tr, Icons.key_outlined, _enabled['rental'] ?? false, () => Get.to(() => const RentalBrowseScreen())),
-      _Service('service_store'.tr, Icons.storefront_outlined, _enabled['store'] ?? false, () => _info('service_store'.tr, 'Le service Magasin ouvre bientôt dans votre ville.')),
+      _Service('service_store'.tr, Icons.storefront_outlined, _enabled['store'] ?? false, () => Get.to(() => const ShopScreen())),
     ];
     return GridView.count(
       crossAxisCount: 2, shrinkWrap: true, physics: const NeverScrollableScrollPhysics(),
